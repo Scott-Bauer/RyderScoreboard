@@ -1479,15 +1479,6 @@
             // Update Round 3 match names based on assignments
             updateR3MatchNames();
         }
-        // save to server (PUT)
-async function saveToNeon(key, payload) {
-  const res = await fetch("/.netlify/functions/data", {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ key, payload })
-  });
-  if (!res.ok) throw new Error("Save failed");
-}
 
 // Replace the existing saveToNeon, loadFromNeon, and related functions with these:
 
