@@ -1,2 +1,11 @@
-npm init -y           # if you don't already have package.json
-npm install @neondatabase/serverless
+# netlify.toml
+[build]
+  publish = "public"                     # change if your static site folder is different
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# optional: specify node version used for functions
+[build.environment]
+  NODE_VERSION = "18"
