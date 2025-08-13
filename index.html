@@ -526,6 +526,256 @@
             font-family: monospace;
             font-size: 12px;
         }
+        @media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        border-radius: 10px;
+    }
+    
+    .header {
+        padding: 20px 15px;
+    }
+    
+    .header h1 {
+        font-size: 1.8em;
+    }
+    
+    .header p {
+        font-size: 1em;
+    }
+    
+    .team-vs-team {
+        flex-direction: column;
+        gap: 10px;
+        font-size: 1.2em;
+    }
+    
+    .team-name-display {
+        margin: 0;
+    }
+    
+    .tabs {
+        flex-direction: column;
+    }
+    
+    .tab {
+        padding: 15px;
+        font-size: 14px;
+    }
+    
+    .tab-content {
+        padding: 15px;
+    }
+    
+    /* Team setup mobile */
+    .team-setup {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .team-section {
+        padding: 20px;
+    }
+    
+    .player-card {
+        padding: 15px;
+    }
+    
+    /* Matchup section mobile */
+    .matchup-section div[style*="grid-template-columns: 1fr 1fr"] {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    
+    /* Match cards mobile */
+    .match-teams {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .vs-divider {
+        order: 1;
+        margin: 10px 0;
+    }
+    
+    .team-1-match {
+        order: 0;
+    }
+    
+    .team-2-match {
+        order: 2;
+    }
+    
+    .match-score-input {
+        width: 100px;
+        margin: 5px 0;
+    }
+    
+    /* Round scoring mobile */
+    .round-scoring-section {
+        padding: 15px;
+    }
+    
+    .round-scoring-section div[style*="grid-template-columns: 1fr 1fr"] {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+    
+    .round-scoring-section div[style*="grid-template-columns: 1fr 1fr; gap: 20px"] {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+    
+    /* Score container mobile */
+    .score-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .team-score-section {
+        padding: 20px;
+    }
+    
+    .player-score-row {
+        grid-template-columns: 1fr auto auto auto auto;
+        gap: 8px;
+        font-size: 14px;
+        padding: 12px;
+    }
+    
+    .player-score-name {
+        font-size: 14px;
+    }
+    
+    .score-display, .total-score {
+        padding: 6px;
+        font-size: 12px;
+        min-width: 35px;
+    }
+    
+    /* Team totals mobile */
+    .team-totals {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .team-total-card {
+        padding: 20px;
+        font-size: 20px;
+    }
+    
+    .team-total-card div[style*="font-size: 48px"] {
+        font-size: 36px !important;
+    }
+    
+    /* Forms and inputs mobile */
+    input[type="text"], 
+    input[type="number"], 
+    select {
+        width: 100px;
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+    
+    .team-name-input {
+        font-size: 14px;
+        padding: 10px;
+    }
+    
+    /* Buttons mobile */
+    .btn {
+        padding: 10px 16px;
+        font-size: 14px;
+        margin: 3px;
+    }
+    
+    /* Data controls mobile */
+    .data-controls {
+        padding: 15px;
+        margin: 15px 0;
+    }
+    
+    textarea {
+        font-size: 11px;
+        height: 80px;
+    }
+    
+    /* Rules section mobile */
+    .rules-section {
+        padding: 20px;
+    }
+    
+    .round-rules {
+        padding: 15px;
+    }
+    
+    .rules-list li {
+        font-size: 14px;
+        margin-bottom: 6px;
+    }
+    
+    /* Winner announcement mobile */
+    .winner-announcement {
+        padding: 20px;
+        font-size: 24px;
+    }
+    
+    .winner-announcement div {
+        font-size: 16px !important;
+    }
+    
+    /* Image mobile */
+    .header img {
+        max-width: 100%;
+        height: auto;
+        max-height: 300px;
+    }
+}
+
+/* Small mobile phones */
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.5em;
+    }
+    
+    .team-vs-team {
+        font-size: 1em;
+    }
+    
+    .player-score-row {
+        grid-template-columns: 1fr 30px 30px 30px 35px;
+        gap: 5px;
+        font-size: 12px;
+    }
+    
+    .score-display, .total-score {
+        font-size: 11px;
+        padding: 4px;
+        min-width: 30px;
+    }
+    
+    input[type="text"], 
+    input[type="number"], 
+    select {
+        width: 90px;
+        font-size: 13px;
+    }
+    
+    .match-score-input {
+        width: 80px;
+    }
+    
+    .team-total-card div[style*="font-size: 48px"] {
+        font-size: 28px !important;
+    }
+}
     </style>
 </head>
 <body>
@@ -1157,40 +1407,16 @@
             document.getElementById('export-section').style.display = 'none';
         }
         
-        function restoreFromText() {
-            try {
-                const dataText = document.getElementById('import-data').value;
-                const data = JSON.parse(dataText);
-                
-                // Clear existing data first
-                const inputs = document.querySelectorAll('input, select');
-                inputs.forEach(input => {
-                    input.value = '';
-                });
-                
-                // Restore from backup
-                Object.keys(data).forEach(id => {
-                    const element = document.getElementById(id);
-                    if (element) {
-                        element.value = data[id];
-                    }
-                });
-                
-                // Save to localStorage
-                saveData();
-                
-                // Update displays
-                updateTeamNames();
-                updateMatchupDropdowns();
-                updateMatchNames();
-                calculateMatchResults();
-                
-                alert('Data restored successfully!');
-                document.getElementById('import-section').style.display = 'none';
-            } catch (e) {
-                alert('Error restoring data. Please check the format.');
-            }
-        }
+// Wire up buttons
+document.getElementById('btn-save')?.addEventListener('click', () => {
+  saveToNeon().catch(e => alert(e.message));
+});
+document.getElementById('btn-load')?.addEventListener('click', () => {
+  loadFromNeon().catch(e => alert(e.message));
+});
+
+// Optional: auto-load on first visit
+loadFromServer().catch(() => {/* ignore if not yet saved */});
         
         function clearAllData() {
             if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
@@ -1261,6 +1487,103 @@
             // Update Round 3 match names based on assignments
             updateR3MatchNames();
         }
+        // save to server (PUT)
+async function saveToNeon(key, payload) {
+  const res = await fetch("/.netlify/functions/data", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ key, payload })
+  });
+  if (!res.ok) throw new Error("Save failed");
+}
+
+// Replace the existing saveToNeon, loadFromNeon, and related functions with these:
+
+// Save to Neon database
+async function saveToNeon() {
+    try {
+        const data = collectFormData();
+        const response = await fetch("/.netlify/functions/data", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                key: "golf-tournament-2025", 
+                payload: data 
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Save failed: ${response.status}`);
+        }
+        
+        alert("Data saved to cloud successfully!");
+    } catch (error) {
+        console.error("Save error:", error);
+        alert(`Failed to save: ${error.message}`);
+    }
+}
+
+// Load from Neon database
+async function loadFromNeon() {
+    try {
+        const response = await fetch("/.netlify/functions/data?key=golf-tournament-2025");
+        
+        if (!response.ok) {
+            throw new Error(`Load failed: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // If no data exists, don't restore anything
+        if (Object.keys(data).length === 0) {
+            alert("No saved data found in cloud.");
+            return;
+        }
+        
+        restoreFormData(data);
+        alert("Data loaded from cloud successfully!");
+    } catch (error) {
+        console.error("Load error:", error);
+        alert(`Failed to load: ${error.message}`);
+    }
+}
+
+function collectFormData() {
+    const data = {};
+    document.querySelectorAll('input, select, textarea').forEach(el => {
+        if (!el.id) return; // Skip elements without IDs
+        
+        if (el.type === 'checkbox') {
+            data[el.id] = el.checked;
+        } else if (el.type === 'radio') {
+            if (el.checked) data[el.id] = el.value;
+        } else {
+            data[el.id] = el.value;
+        }
+    });
+    return data;
+}
+
+function restoreFormData(data) {
+    document.querySelectorAll('input, select, textarea').forEach(el => {
+        if (!el.id || !(el.id in data)) return;
+        
+        if (el.type === 'checkbox') {
+            el.checked = !!data[el.id];
+        } else if (el.type === 'radio') {
+            el.checked = (el.value === data[el.id]);
+        } else {
+            el.value = data[el.id];
+        }
+    });
+
+    // Update UI after restoring data
+    if (typeof updateTeamNames === 'function') updateTeamNames();
+    if (typeof updateMatchupDropdowns === 'function') updateMatchupDropdowns();
+    if (typeof updateMatchNames === 'function') updateMatchNames();
+    if (typeof calculateMatchResults === 'function') calculateMatchResults();
+}
+
         
         function updateR1MatchNames() {
             // Match 1 - Red Pair 1 vs Blue Pair 1
@@ -1623,24 +1946,26 @@
             });
         });
     </script>
-                <div class="data-controls">
-                    <h4>Data Persistence</h4>
-                    <p style="margin-bottom: 15px;">(For Scotty to use in case the scoring fucks up)</p>
-                    <button class="btn" onclick="exportData()">Backup Data</button>
-                    <button class="btn" onclick="importData()">Restore Data</button>
-                    <button class="btn" onclick="clearAllData()" style="background: #dc3545;">Clear All</button>
-                    
-                    <div class="export-import" id="export-section" style="display: none;">
-                        <h5>Backup Data (copy this text):</h5>
-                        <textarea id="export-data" readonly></textarea>
-                    </div>
-                    
-                    <div class="export-import" id="import-section" style="display: none;">
-                        <h5>Paste backup data here:</h5>
-                        <textarea id="import-data" placeholder="Paste your backup data here..."></textarea>
-                        <br>
-                        <button class="btn" onclick="restoreFromText()">Restore from Text</button>
-                    </div>
-                </div>
+<div class="data-controls">
+    <h4>Data Persistence</h4>
+    <p style="margin-bottom: 15px;">(For Scotty to use in case the scoring fucks up)</p>
+    <button class="btn" onclick="saveToNeon()">💾 Save to Cloud</button>
+    <button class="btn" onclick="loadFromNeon()">☁️ Load from Cloud</button>
+    <button class="btn" onclick="exportData()">📤 Backup Data</button>
+    <button class="btn" onclick="importData()">📥 Restore Data</button>
+    <button class="btn" onclick="clearAllData()" style="background: #dc3545;">🗑️ Clear All</button>
+    
+    <div class="export-import" id="export-section" style="display: none;">
+        <h5>Backup Data (copy this text):</h5>
+        <textarea id="export-data" readonly></textarea>
+    </div>
+    
+    <div class="export-import" id="import-section" style="display: none;">
+        <h5>Paste backup data here:</h5>
+        <textarea id="import-data" placeholder="Paste your backup data here..."></textarea>
+        <br>
+        <button class="btn" onclick="restoreFromText()">Restore from Text</button>
+    </div>
+</div>
 </body>
 </html>
