@@ -5,7 +5,7 @@
 const { Client } = require('@neondatabase/serverless');
 
 exports.handler = async (event) => {
-  const connString = process.env.DATABASE_URL;
+  const connString = process.env.NETLIFY_DATABASE_URL;
 
   if (!connString) {
     return {
