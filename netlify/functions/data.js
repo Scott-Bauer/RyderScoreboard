@@ -1,118 +1,74 @@
 // netlify/functions/data.js
-import { Client } from "@neondatabase/serverless";
+// CommonJS-style Netlify Function using @neondatabase/serverless
+// Make sure you have DATABASE_URL set in Netlify Environment Variables.
+
+const { Client } = require('@neondatabase/serverless');
 
 const connString = process.env.NETLIFY_DATABASE_URL;
+if (!connString) {
+  console.error('Missing DATABASE_URL environment variable');
+}
 
-export async function handler(event) {
-  console.log("Function called with method:", event.httpMethod);
-  console.log("Environment check - NETLIFY_DATABASE_URL exists:", !!connString);
-  
-  if (!connString) {
-    console.error("Missing NETLIFY_DATABASE_URL environment variable");
-    return { 
-      statusCode: 500, 
-      body: JSON.stringify({ error: "Database configuration missing" }) 
-    };
-  }
+function getClient() {
+  return new Client({ connectionString: connString });
+}
 
+exports.handler = async (event) => {
   const method = event.httpMethod;
-  const client = new Client({ connectionString: connString });
-  
+  const client = getClient();
+
   try {
     await client.connect();
-    console.log("Database connected successfully");
 
-    if (method === "GET") {
-      const key = (event.queryStringParameters && event.queryStringParameters.key) || "default";
-      console.log("GET request for key:", key);
-      
-      const res = await client.query(
-        "SELECT payload FROM app_data WHERE key = $1",
-        [key]
-      );
-      
+    if (method === 'GET') {
+      // GET /.netlify/functions/data?key=your-key
+      const key = (event.queryStringParameters && event.queryStringParameters.key) || 'default';
+      const res = await client.query('SELECT payload FROM app_data WHERE key = $1', [key]);
+
       if (res.rowCount === 0) {
-        console.log("No data found for key:", key);
-        return { 
-          statusCode: 200, 
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({}) 
+        return {
+          statusCode: 200,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({})
         };
       }
-      
-      console.log("Data found for key:", key);
+
       return {
         statusCode: 200,
-        headers: { "Content-Type": "application/json" },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(res.rows[0].payload)
       };
     }
 
-    if (method === "PUT") {
-      console.log("PUT request received");
-      console.log("Raw body:", event.body);
-      
-      if (!event.body) {
-        return { 
-          statusCode: 400, 
-          body: JSON.stringify({ error: "No body provided" }) 
-        };
-      }
-
-      let body;
+    if (method === 'PUT') {
+      // PUT /.netlify/functions/data
+      // body: { "key": "golf-2025-08-15", "payload": { ... } }
+      let body = {};
       try {
-        body = JSON.parse(event.body);
-      } catch (parseError) {
-        console.error("JSON parse error:", parseError);
-        return { 
-          statusCode: 400, 
-          body: JSON.stringify({ error: "Invalid JSON in request body" }) 
-        };
+        body = JSON.parse(event.body || '{}');
+      } catch (e) {
+        return { statusCode: 400, body: 'Invalid JSON body' };
       }
 
-      const key = body.key || "default";
-      const payload = body.payload || {};
-      
-      console.log("Saving data for key:", key);
-      console.log("Payload size:", JSON.stringify(payload).length, "characters");
+      const key = body.key || 'default';
+      const payload = body.payload ?? {};
 
+      // Upsert into app_data (key primary)
       await client.query(
         `INSERT INTO app_data (key, payload, updated_at)
          VALUES ($1, $2::jsonb, now())
          ON CONFLICT (key) DO UPDATE SET payload = EXCLUDED.payload, updated_at = now()`,
-        [key, JSON.stringify(payload)]
+        [key, payload]
       );
-      
-      console.log("Data saved successfully");
-      return { 
-        statusCode: 200, 
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ success: true }) 
-      };
+
+      return { statusCode: 204, body: '' };
     }
 
-    console.log("Method not allowed:", method);
-    return { 
-      statusCode: 405, 
-      body: JSON.stringify({ error: "Method not allowed" }) 
-    };
-
+    return { statusCode: 405, body: 'Method not allowed' };
   } catch (err) {
-    console.error("Function error:", err);
-    console.error("Error stack:", err.stack);
-    return { 
-      statusCode: 500, 
-      body: JSON.stringify({ 
-        error: "Internal server error", 
-        details: err.message 
-      }) 
-    };
+    console.error('Function error:', err);
+    return { statusCode: 500, body: JSON.stringify({ error: String(err) }) };
   } finally {
-    try { 
-      await client.end(); 
-      console.log("Database connection closed");
-    } catch (e) {
-      console.error("Error closing connection:", e);
-    }
+    try { await client.end(); } catch (e) { /* ignore close errors */ }
   }
-}
+};

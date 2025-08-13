@@ -1870,6 +1870,29 @@ function restoreFormData(data) {
                 winnerAnnouncement.style.display = 'none';
             }
         }
+        function restoreFromText() {
+    try {
+        const dataText = document.getElementById('import-data').value;
+        const data = JSON.parse(dataText);
+        
+        // Clear existing data first
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.value = '';
+        });
+        
+        // Restore from backup
+        restoreFormData(data);
+        
+        // Save to localStorage
+        saveData();
+        
+        alert('Data restored successfully!');
+        document.getElementById('import-section').style.display = 'none';
+    } catch (e) {
+        alert('Error restoring data. Please check the format.');
+    }
+}
         
         function updatePlayerPointsDisplay(r1Points, r2Points, r3Points, teamNum) {
             const r1PerPlayer = r1Points / 4;
