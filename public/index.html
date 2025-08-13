@@ -1,0 +1,1963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elias's Stag Ryder Cup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c5530 0%, #4a7c59 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c5530 0%, #4a7c59 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .team-vs-team {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .team-name-display {
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin: 0 20px;
+        }
+        
+        .team-1-display {
+            background: rgba(220, 53, 69, 0.8);
+        }
+        
+        .team-2-display {
+            background: rgba(13, 110, 253, 0.8);
+        }
+        
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #6c757d;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            background: white;
+            color: #2c5530;
+            border-bottom: 3px solid #2c5530;
+        }
+        
+        .tab:hover:not(.active) {
+            background: #e9ecef;
+            color: #495057;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .team-setup {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .team-section {
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .team-1 {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+        
+        .team-2 {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+        }
+        
+        .team-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .team-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .team-name-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            font-size: 16px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .team-name-input:focus {
+            outline: none;
+            border-color: rgba(255,255,255,0.8);
+            background: white;
+        }
+        
+        .player-card {
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .player-name {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .player-details {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+        }
+        
+        input[type="text"], input[type="number"], select {
+            padding: 8px 12px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 6px;
+            font-size: 14px;
+            width: 120px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+        }
+        
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: rgba(255,255,255,0.8);
+            background: white;
+        }
+        
+        .matchup-section {
+            margin-bottom: 30px;
+        }
+        
+        .round-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #4a7c59;
+        }
+        
+        .rules-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        
+        .rules-title {
+            color: #2c5530;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .round-rules {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #4a7c59;
+        }
+        
+        .round-title {
+            color: #2c5530;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .rules-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .rules-list li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .rules-list li:before {
+            content: "⛳";
+            position: absolute;
+            left: 0;
+        }
+        
+        .round-scoring-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 4px solid #4a7c59;
+        }
+        
+        .match-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 2px solid #e9ecef;
+        }
+        
+        .match-header {
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            color: #2c5530;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .match-teams {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .team-match {
+            text-align: center;
+        }
+        
+        .team-1-match {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(220, 53, 69, 0.05) 100%);
+            border-radius: 8px;
+            padding: 15px;
+            border: 2px solid rgba(220, 53, 69, 0.3);
+        }
+        
+        .team-2-match {
+            background: linear-gradient(135deg, rgba(13, 110, 253, 0.1) 0%, rgba(13, 110, 253, 0.05) 100%);
+            border-radius: 8px;
+            padding: 15px;
+            border: 2px solid rgba(13, 110, 253, 0.3);
+        }
+        
+        .team-match-name {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .match-score-input {
+            width: 80px;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .match-score-input:focus {
+            outline: none;
+            border-color: #2c5530;
+        }
+        
+        .vs-divider {
+            font-weight: bold;
+            font-size: 18px;
+            color: #666;
+            text-align: center;
+        }
+        
+        .match-result {
+            text-align: center;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            background: #f8f9fa;
+            color: #666;
+        }
+        
+        .match-result.red-win {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+        
+        .match-result.blue-win {
+            background: rgba(13, 110, 253, 0.1);
+            color: #007bff;
+        }
+        
+        .score-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .team-score-section {
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+        }
+        
+        .team-1-scoring {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+        
+        .team-2-scoring {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        }
+        
+        .team-score-header {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+        
+        .player-score-row {
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: grid;
+            grid-template-columns: 1fr auto auto auto auto;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .player-score-name {
+            font-weight: bold;
+        }
+        
+        .score-display {
+            background: rgba(255,255,255,0.3);
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            min-width: 40px;
+        }
+        
+        .total-score {
+            font-weight: bold;
+            font-size: 16px;
+            background: rgba(255,255,255,0.3);
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .team-totals {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .team-total-card {
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .team-1-total {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+        
+        .team-2-total {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        }
+        
+        .winner-announcement {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 28px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .btn {
+            background: #2c5530;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            background: #1e3a21;
+        }
+        
+        .payout-info {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .payout-title {
+            font-weight: bold;
+            color: #856404;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .payout-text {
+            color: #856404;
+        }
+        
+        .data-controls {
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .data-controls h4 {
+            color: #1976d2;
+            margin-bottom: 15px;
+        }
+        
+        .export-import {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        @media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        border-radius: 10px;
+    }
+    
+    .header {
+        padding: 20px 15px;
+    }
+    
+    .header h1 {
+        font-size: 1.8em;
+    }
+    
+    .header p {
+        font-size: 1em;
+    }
+    
+    .team-vs-team {
+        flex-direction: column;
+        gap: 10px;
+        font-size: 1.2em;
+    }
+    
+    .team-name-display {
+        margin: 0;
+    }
+    
+    .tabs {
+        flex-direction: column;
+    }
+    
+    .tab {
+        padding: 15px;
+        font-size: 14px;
+    }
+    
+    .tab-content {
+        padding: 15px;
+    }
+    
+    /* Team setup mobile */
+    .team-setup {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .team-section {
+        padding: 20px;
+    }
+    
+    .player-card {
+        padding: 15px;
+    }
+    
+    /* Matchup section mobile */
+    .matchup-section div[style*="grid-template-columns: 1fr 1fr"] {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    
+    /* Match cards mobile */
+    .match-teams {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .vs-divider {
+        order: 1;
+        margin: 10px 0;
+    }
+    
+    .team-1-match {
+        order: 0;
+    }
+    
+    .team-2-match {
+        order: 2;
+    }
+    
+    .match-score-input {
+        width: 100px;
+        margin: 5px 0;
+    }
+    
+    /* Round scoring mobile */
+    .round-scoring-section {
+        padding: 15px;
+    }
+    
+    .round-scoring-section div[style*="grid-template-columns: 1fr 1fr"] {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+    
+    .round-scoring-section div[style*="grid-template-columns: 1fr 1fr; gap: 20px"] {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+    
+    /* Score container mobile */
+    .score-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .team-score-section {
+        padding: 20px;
+    }
+    
+    .player-score-row {
+        grid-template-columns: 1fr auto auto auto auto;
+        gap: 8px;
+        font-size: 14px;
+        padding: 12px;
+    }
+    
+    .player-score-name {
+        font-size: 14px;
+    }
+    
+    .score-display, .total-score {
+        padding: 6px;
+        font-size: 12px;
+        min-width: 35px;
+    }
+    
+    /* Team totals mobile */
+    .team-totals {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .team-total-card {
+        padding: 20px;
+        font-size: 20px;
+    }
+    
+    .team-total-card div[style*="font-size: 48px"] {
+        font-size: 36px !important;
+    }
+    
+    /* Forms and inputs mobile */
+    input[type="text"], 
+    input[type="number"], 
+    select {
+        width: 100px;
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+    
+    .team-name-input {
+        font-size: 14px;
+        padding: 10px;
+    }
+    
+    /* Buttons mobile */
+    .btn {
+        padding: 10px 16px;
+        font-size: 14px;
+        margin: 3px;
+    }
+    
+    /* Data controls mobile */
+    .data-controls {
+        padding: 15px;
+        margin: 15px 0;
+    }
+    
+    textarea {
+        font-size: 11px;
+        height: 80px;
+    }
+    
+    /* Rules section mobile */
+    .rules-section {
+        padding: 20px;
+    }
+    
+    .round-rules {
+        padding: 15px;
+    }
+    
+    .rules-list li {
+        font-size: 14px;
+        margin-bottom: 6px;
+    }
+    
+    /* Winner announcement mobile */
+    .winner-announcement {
+        padding: 20px;
+        font-size: 24px;
+    }
+    
+    .winner-announcement div {
+        font-size: 16px !important;
+    }
+    
+    /* Image mobile */
+    .header img {
+        max-width: 100%;
+        height: auto;
+        max-height: 300px;
+    }
+}
+
+/* Small mobile phones */
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.5em;
+    }
+    
+    .team-vs-team {
+        font-size: 1em;
+    }
+    
+    .player-score-row {
+        grid-template-columns: 1fr 30px 30px 30px 35px;
+        gap: 5px;
+        font-size: 12px;
+    }
+    
+    .score-display, .total-score {
+        font-size: 11px;
+        padding: 4px;
+        min-width: 30px;
+    }
+    
+    input[type="text"], 
+    input[type="number"], 
+    select {
+        width: 90px;
+        font-size: 13px;
+    }
+    
+    .match-score-input {
+        width: 80px;
+    }
+    
+    .team-total-card div[style*="font-size: 48px"] {
+        font-size: 28px !important;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Elias's Stag Ryder Cup Tournament</h1> <img src="https://i.postimg.cc/KjNmG3SL/IMG-5641.jpg" alt="Girl in a jacket" width="400" height="500">
+            <p>8 Players • 2 Teams • 3 Rounds • $400 Total Pool</p>
+            <p>Time to get dialed</p>
+            <div class="team-vs-team">
+                <div class="team-name-display team-1-display" id="header-team-1">Team Red</div>
+                <span>VS</span>
+                <div class="team-name-display team-2-display" id="header-team-2">Team Blue</div>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('teams')">Team Setup</button>
+            <button class="tab" onclick="showTab('matches')">Match Scoring</button>
+            <button class="tab" onclick="showTab('scoring')">Team Leaderboard</button>
+        </div>
+        
+        <div id="teams" class="tab-content active">
+            <h2 style="color: #2c5530; margin-bottom: 25px; text-align: center;">Team Registration</h2>
+            
+            
+            <div class="team-setup">
+                <div class="team-section team-1">
+                    <div class="team-header">
+                        <div class="team-title">🔴 TEAM 1</div>
+                        <input type="text" class="team-name-input" id="team-1-name" placeholder="Enter Team Name" value="Team Red" onchange="updateTeamNames(); saveData();">
+                    </div>
+                    
+                    <div class="player-card">
+                        <div class="player-name">Player 1</div>
+                        <div class="player-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Name:</span>
+                                <input type="text" id="team1-player1-name" placeholder="Enter name" onchange="saveData();">
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Handicap:</span>
+                                <input type="number" id="team1-player1-handicap" placeholder="0" min="0" max="54" onchange="saveData();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="player-card">
+                        <div class="player-name">Player 2</div>
+                        <div class="player-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Name:</span>
+                                <input type="text" id="team1-player2-name" placeholder="Enter name" onchange="saveData();">
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Handicap:</span>
+                                <input type="number" id="team1-player2-handicap" placeholder="0" min="0" max="54" onchange="saveData();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="player-card">
+                        <div class="player-name">Player 3</div>
+                        <div class="player-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Name:</span>
+                                <input type="text" id="team1-player3-name" placeholder="Enter name" onchange="saveData();">
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Handicap:</span>
+                                <input type="number" id="team1-player3-handicap" placeholder="0" min="0" max="54" onchange="saveData();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="player-card">
+                        <div class="player-name">Player 4</div>
+                        <div class="player-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Name:</span>
+                                <input type="text" id="team1-player4-name" placeholder="Enter name" onchange="saveData();">
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Handicap:</span>
+                                <input type="number" id="team1-player4-handicap" placeholder="0" min="0" max="54" onchange="saveData();">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="team-section team-2">
+                    <div class="team-header">
+                        <div class="team-title">🔵 TEAM 2</div>
+                        <input type="text" class="team-name-input" id="team-2-name" placeholder="Enter Team Name" value="Team Blue" onchange="updateTeamNames(); saveData();">
+                    </div>
+                    
+                    <div class="player-card">
+                        <div class="player-name">Player 1</div>
+                        <div class="player-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Name:</span>
+                                <input type="text" id="team2-player1-name" placeholder="Enter name" onchange="saveData();">
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Handicap:</span>
+                                <input type="number" id="team2-player1-handicap" placeholder="0" min="0" max="54" onchange="saveData();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="player-card">
+                        <div class="player-name">Player 2</div>
+                        <div class="player-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Name:</span>
+                                <input type="text" id="team2-player2-name" placeholder="Enter name" onchange="saveData();">
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Handicap:</span>
+                                <input type="number" id="team2-player2-handicap" placeholder="0" min="0" max="54" onchange="saveData();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="player-card">
+                        <div class="player-name">Player 3</div>
+                        <div class="player-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Name:</span>
+                                <input type="text" id="team2-player3-name" placeholder="Enter name" onchange="saveData();">
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Handicap:</span>
+                                <input type="number" id="team2-player3-handicap" placeholder="0" min="0" max="54" onchange="saveData();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="player-card">
+                        <div class="player-name">Player 4</div>
+                        <div class="player-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Name:</span>
+                                <input type="text" id="team2-player4-name" placeholder="Enter name" onchange="saveData();">
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Handicap:</span>
+                                <input type="number" id="team2-player4-handicap" placeholder="0" min="0" max="54" onchange="saveData();">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="matchup-section">
+                <h3 style="color: #2c5530; text-align: center; margin-bottom: 25px;">Round Matchup Assignments</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                    <div class="round-section">
+                        <h4 style="color: #2c5530; margin-bottom: 20px;">Round 1 - 2v2 Best Ball Matchups @ Eagles Glenn</h4>
+                        <div style="background: white; border-radius: 8px; padding: 20px;">
+                            <div style="margin-bottom: 15px;">
+                                <strong style="color: #dc3545;">Team Red Pair 1:</strong>
+                                <select id="r1-red-p1" style="margin: 5px; padding: 8px; border: 2px solid #dc3545; border-radius: 6px;" onchange="saveData();">
+                                    <option value="">Select Player</option>
+                                </select>
+                                <select id="r1-red-p2" style="margin: 5px; padding: 8px; border: 2px solid #dc3545; border-radius: 6px;" onchange="saveData();">
+                                    <option value="">Select Player</option>
+                                </select>
+                            </div>
+                            <div style="text-align: center; margin: 10px 0; font-weight: bold; color: #666;">VS</div>
+                            <div style="margin-bottom: 15px;">
+                                <strong style="color: #007bff;">Team Blue Pair 1:</strong>
+                                <select id="r1-blue-p1" style="margin: 5px; padding: 8px; border: 2px solid #007bff; border-radius: 6px;" onchange="saveData();">
+                                    <option value="">Select Player</option>
+                                </select>
+                                <select id="r1-blue-p2" style="margin: 5px; padding: 8px; border: 2px solid #007bff; border-radius: 6px;" onchange="saveData();">
+                                    <option value="">Select Player</option>
+                                </select>
+                            </div>
+                            <hr style="margin: 20px 0;">
+                            <div style="margin-bottom: 15px;">
+                                <strong style="color: #dc3545;">Team Red Pair 2:</strong>
+                                <select id="r1-red-p3" style="margin: 5px; padding: 8px; border: 2px solid #dc3545; border-radius: 6px;" onchange="saveData();">
+                                    <option value="">Select Player</option>
+                                </select>
+                                <select id="r1-red-p4" style="margin: 5px; padding: 8px; border: 2px solid #dc3545; border-radius: 6px;" onchange="saveData();">
+                                    <option value="">Select Player</option>
+                                </select>
+                            </div>
+                            <div style="text-align: center; margin: 10px 0; font-weight: bold; color: #666;">VS</div>
+                            <div style="margin-bottom: 15px;">
+                                <strong style="color: #007bff;">Team Blue Pair 2:</strong>
+                                <select id="r1-blue-p3" style="margin: 5px; padding: 8px; border: 2px solid #007bff; border-radius: 6px;" onchange="saveData();">
+                                    <option value="">Select Player</option>
+                                </select>
+                                <select id="r1-blue-p4" style="margin: 5px; padding: 8px; border: 2px solid #007bff; border-radius: 6px;" onchange="saveData();">
+                                    <option value="">Select Player</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="round-section">
+                        <h4 style="color: #2c5530; margin-bottom: 20px;">Round 3 - 1v1 Individual Matchups @ Mill River</h4>
+                        <div style="background: white; border-radius: 8px; padding: 20px;">
+                            <div style="margin-bottom: 15px;">
+                                <strong>Match 1:</strong>
+                                <select id="r3-match1-red" style="margin: 5px; padding: 8px; border: 2px solid #dc3545; border-radius: 6px;" onchange="saveData();">
+                                    <option value="">Red Player</option>
+                                </select>
+                                <span style="margin: 0 10px; font-weight: bold;">VS</span>
+                                <select id="r3-match1-blue" style="margin: 5px; padding: 8px; border: 2px solid #007bff; border-radius: 6px;" onchange="saveData();">
+                                    <option value="">Blue Player</option>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <strong>Match 2:</strong>
+                                <select id="r3-match2-red" style="margin: 5px; padding: 8px; border: 2px solid #dc3545; border-radius: 6px;" onchange="saveData();">
+                                    <option value="">Red Player</option>
+                                </select>
+                                <span style="margin: 0 10px; font-weight: bold;">VS</span>
+                                <select id="r3-match2-blue" style="margin: 5px; padding: 8px; border: 2px solid #007bff; border-radius: 6px;" onchange="saveData();">
+                                    <option value="">Blue Player</option>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <strong>Match 3:</strong>
+                                <select id="r3-match3-red" style="margin: 5px; padding: 8px; border: 2px solid #dc3545; border-radius: 6px;" onchange="saveData();">
+                                    <option value="">Red Player</option>
+                                </select>
+                                <span style="margin: 0 10px; font-weight: bold;">VS</span>
+                                <select id="r3-match3-blue" style="margin: 5px; padding: 8px; border: 2px solid #007bff; border-radius: 6px;" onchange="saveData();">
+                                    <option value="">Blue Player</option>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <strong>Match 4:</strong>
+                                <select id="r3-match4-red" style="margin: 5px; padding: 8px; border: 2px solid #dc3545; border-radius: 6px;" onchange="saveData();">
+                                    <option value="">Red Player</option>
+                                </select>
+                                <span style="margin: 0 10px; font-weight: bold;">VS</span>
+                                <select id="r3-match4-blue" style="margin: 5px; padding: 8px; border: 2px solid #007bff; border-radius: 6px;" onchange="saveData();">
+                                    <option value="">Blue Player</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payout-info">
+                <div class="payout-title">💰 Prize Pool & Payout</div>
+                <div class="payout-text">
+                    <strong>Entry:</strong> $50 per player = $400 total pool<br>
+                    <strong>Winner Takes All:</strong> The winning team splits the entire $400 evenly ($100 per player)
+                </div>
+            </div>
+            
+            <div class="rules-section">
+                <div class="rules-title">Tournament Rules & Format</div>
+                
+                <div class="round-rules">
+                    <div class="round-title">🎯 Tournament Overview</div>
+                    <ul class="rules-list">
+                        <li><strong>Teams:</strong> 2 teams of 4 players each</li>
+                        <li><strong>Entry Fee:</strong> $50 per person ($400 total pool)</li>
+                        <li><strong>Format:</strong> 3 rounds of team vs team competition</li>
+                        <li><strong>Scoring:</strong> Points awarded to each team per round</li>
+                        <li><strong>Winner:</strong> Team with most total points wins entire pot</li>
+                        <li><strong>Payout:</strong> Winning team splits $400 evenly ($100 per player)</li>
+                    </ul>
+                </div>
+                
+                <div class="round-rules">
+                    <div class="round-title">⛳ Round 1 - 2v2 Best Ball Matches</div>
+                    <ul class="rules-list">
+                        <li>Each team splits into 2 pairs (assign matchups above)</li>
+                        <li>Two separate 2v2 best ball matches: Red Pair 1 vs Blue Pair 1, Red Pair 2 vs Blue Pair 2</li>
+                        <li>Match play scoring per hole for each pairing</li>
+                        <li><strong>Points Awarded per Match:</strong></li>
+                        <li>Winning pair = 1 point for their team</li>
+                        <li>Losing pair = 0 points</li>
+                        <li>No ties - playoff hole or chip-off to decide winner</li>
+                        <li><strong>Maximum 2 points available per team</strong></li>
+                    </ul>
+                </div>
+                
+                <div class="round-rules">
+                    <div class="round-title">🤝 Round 2 - Team Scramble Challenge</div>
+                    <ul class="rules-list">
+                        <li>Each team plays scramble format</li>
+                        <li>Best team score wins (stroke play)</li>
+                        <li><strong>Points Awarded:</strong></li>
+                        <li>Winning team = 3 points</li>
+                        <li>Losing team = 0 points</li>
+                        <li>No ties - playoff hole or chip-off to decide winner</li>
+                    </ul>
+                </div>
+                
+                <div class="round-rules">
+                    <div class="round-title">🏆 Round 3 - Individual Matches</div>
+                    <ul class="rules-list">
+                        <li>4 individual matches: Assigned matchups (see above)</li>
+                        <li>Individual stroke play head-to-head</li>
+                        <li><strong>Points Awarded:</strong></li>
+                        <li>Each individual match win = 1 point to team</li>
+                        <li>Each individual match loss = 0 points</li>
+                        <li>No ties - playoff hole or chip-off to decide winner</li>
+                        <li><strong>Maximum 4 points available per team</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div id="matches" class="tab-content">
+            <h2 style="color: #2c5530; margin-bottom: 25px; text-align: center;">Match Results & Scoring</h2>
+            
+            <!-- Round 1 Scoring -->
+            <div class="round-scoring-section">
+                <h3 style="color: #2c5530; text-align: center; margin-bottom: 20px;">⛳ Round 1 - 2v2 Best Ball Matches</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px;">
+                    <div class="match-card">
+                        <div class="match-header">Match 1 - Best Ball</div>
+                        <div class="match-teams">
+                            <div class="team-match team-1-match">
+                                <div class="team-match-name" id="r1m1-red-pair">Red Pair 1</div>
+                                <input type="number" class="match-score-input" id="r1m1-red-score" placeholder="Score" onchange="calculateMatchResults(); saveData();">
+                            </div>
+                            <div class="vs-divider">VS</div>
+                            <div class="team-match team-2-match">
+                                <div class="team-match-name" id="r1m1-blue-pair">Blue Pair 1</div>
+                                <input type="number" class="match-score-input" id="r1m1-blue-score" placeholder="Score" onchange="calculateMatchResults(); saveData();">
+                            </div>
+                        </div>
+                        <div class="match-result" id="r1m1-result">Enter scores to see result</div>
+                    </div>
+                    
+                    <div class="match-card">
+                        <div class="match-header">Match 2 - Best Ball</div>
+                        <div class="match-teams">
+                            <div class="team-match team-1-match">
+                                <div class="team-match-name" id="r1m2-red-pair">Red Pair 2</div>
+                                <input type="number" class="match-score-input" id="r1m2-red-score" placeholder="Score" onchange="calculateMatchResults(); saveData();">
+                            </div>
+                            <div class="vs-divider">VS</div>
+                            <div class="team-match team-2-match">
+                                <div class="team-match-name" id="r1m2-blue-pair">Blue Pair 2</div>
+                                <input type="number" class="match-score-input" id="r1m2-blue-score" placeholder="Score" onchange="calculateMatchResults(); saveData();">
+                            </div>
+                        </div>
+                        <div class="match-result" id="r1m2-result">Enter scores to see result</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Round 2 Scoring -->
+            <div class="round-scoring-section">
+                <h3 style="color: #2c5530; text-align: center; margin-bottom: 20px;">🤝 Round 2 - Team Scramble</h3>
+                
+                <div class="match-card" style="max-width: 600px; margin: 0 auto;">
+                    <div class="match-header">Team Scramble - 18 Holes</div>
+                    <div class="match-teams">
+                        <div class="team-match team-1-match">
+                            <div class="team-match-name" id="r2-red-team">Team Red</div>
+                            <input type="number" class="match-score-input" id="r2-red-score" placeholder="Team Score" onchange="calculateMatchResults(); saveData();">
+                        </div>
+                        <div class="vs-divider">VS</div>
+                        <div class="team-match team-2-match">
+                            <div class="team-match-name" id="r2-blue-team">Team Blue</div>
+                            <input type="number" class="match-score-input" id="r2-blue-score" placeholder="Team Score" onchange="calculateMatchResults(); saveData();">
+                        </div>
+                    </div>
+                    <div class="match-result" id="r2-result">Enter team scores to see result</div>
+                </div>
+            </div>
+            
+            <!-- Round 3 Scoring -->
+            <div class="round-scoring-section">
+                <h3 style="color: #2c5530; text-align: center; margin-bottom: 20px;">⚔️ Round 3 - Individual Matches</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px;">
+                    <div class="match-card">
+                        <div class="match-header">Individual Match 1</div>
+                        <div class="match-teams">
+                            <div class="team-match team-1-match">
+                                <div class="team-match-name" id="r3m1-red-player">Red Player</div>
+                                <input type="number" class="match-score-input" id="r3m1-red-score" placeholder="Score" onchange="calculateMatchResults(); saveData();">
+                            </div>
+                            <div class="vs-divider">VS</div>
+                            <div class="team-match team-2-match">
+                                <div class="team-match-name" id="r3m1-blue-player">Blue Player</div>
+                                <input type="number" class="match-score-input" id="r3m1-blue-score" placeholder="Score" onchange="calculateMatchResults(); saveData();">
+                            </div>
+                        </div>
+                        <div class="match-result" id="r3m1-result">Enter scores to see result</div>
+                    </div>
+                    
+                    <div class="match-card">
+                        <div class="match-header">Individual Match 2</div>
+                        <div class="match-teams">
+                            <div class="team-match team-1-match">
+                                <div class="team-match-name" id="r3m2-red-player">Red Player</div>
+                                <input type="number" class="match-score-input" id="r3m2-red-score" placeholder="Score" onchange="calculateMatchResults(); saveData();">
+                            </div>
+                            <div class="vs-divider">VS</div>
+                            <div class="team-match team-2-match">
+                                <div class="team-match-name" id="r3m2-blue-player">Blue Player</div>
+                                <input type="number" class="match-score-input" id="r3m2-blue-score" placeholder="Score" onchange="calculateMatchResults(); saveData();">
+                            </div>
+                        </div>
+                        <div class="match-result" id="r3m2-result">Enter scores to see result</div>
+                    </div>
+                    
+                    <div class="match-card">
+                        <div class="match-header">Individual Match 3</div>
+                        <div class="match-teams">
+                            <div class="team-match team-1-match">
+                                <div class="team-match-name" id="r3m3-red-player">Red Player</div>
+                                <input type="number" class="match-score-input" id="r3m3-red-score" placeholder="Score" onchange="calculateMatchResults(); saveData();">
+                            </div>
+                            <div class="vs-divider">VS</div>
+                            <div class="team-match team-2-match">
+                                <div class="team-match-name" id="r3m3-blue-player">Blue Player</div>
+                                <input type="number" class="match-score-input" id="r3m3-blue-score" placeholder="Score" onchange="calculateMatchResults(); saveData();">
+                            </div>
+                        </div>
+                        <div class="match-result" id="r3m3-result">Enter scores to see result</div>
+                    </div>
+                    
+                    <div class="match-card">
+                        <div class="match-header">Individual Match 4</div>
+                        <div class="match-teams">
+                            <div class="team-match team-1-match">
+                                <div class="team-match-name" id="r3m4-red-player">Red Player</div>
+                                <input type="number" class="match-score-input" id="r3m4-red-score" placeholder="Score" onchange="calculateMatchResults(); saveData();">
+                            </div>
+                            <div class="vs-divider">VS</div>
+                            <div class="team-match team-2-match">
+                                <div class="team-match-name" id="r3m4-blue-player">Blue Player</div>
+                                <input type="number" class="match-score-input" id="r3m4-blue-score" placeholder="Score" onchange="calculateMatchResults(); saveData();">
+                            </div>
+                        </div>
+                        <div class="match-result" id="r3m4-result">Enter scores to see result</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="scoring" class="tab-content">
+            <h2 style="color: #2c5530; margin-bottom: 25px; text-align: center;">Team Leaderboard & Points</h2>
+            
+            <div class="team-totals">
+                <div class="team-total-card team-1-total">
+                    <div id="team-1-final-name">Team Red</div>
+                    <div style="font-size: 48px; margin: 15px 0;" id="team-1-total-points">0</div>
+                    <div>Total Points</div>
+                    <div style="font-size: 14px; margin-top: 10px; opacity: 0.8;">
+                        R1: <span id="team-1-r1-points">0</span> | 
+                        R2: <span id="team-1-r2-points">0</span> | 
+                        R3: <span id="team-1-r3-points">0</span>
+                    </div>
+                </div>
+                
+                <div class="team-total-card team-2-total">
+                    <div id="team-2-final-name">Team Blue</div>
+                    <div style="font-size: 48px; margin: 15px 0;" id="team-2-total-points">0</div>
+                    <div>Total Points</div>
+                    <div style="font-size: 14px; margin-top: 10px; opacity: 0.8;">
+                        R1: <span id="team-2-r1-points">0</span> | 
+                        R2: <span id="team-2-r2-points">0</span> | 
+                        R3: <span id="team-2-r3-points">0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="score-container">
+                <div class="team-score-section team-1-scoring">
+                    <div class="team-score-header" id="scoring-team-1-name">Team Red</div>
+                    
+                    <div class="player-score-row">
+                        <div class="player-score-name" id="t1p1-name">Player 1</div>
+                        <div class="score-display" id="t1p1-r1">0</div>
+                        <div class="score-display" id="t1p1-r2">0</div>
+                        <div class="score-display" id="t1p1-r3">0</div>
+                        <div class="total-score" id="t1p1-total">0</div>
+                    </div>
+                    
+                    <div class="player-score-row">
+                        <div class="player-score-name" id="t1p2-name">Player 2</div>
+                        <div class="score-display" id="t1p2-r1">0</div>
+                        <div class="score-display" id="t1p2-r2">0</div>
+                        <div class="score-display" id="t1p2-r3">0</div>
+                        <div class="total-score" id="t1p2-total">0</div>
+                    </div>
+                    
+                    <div class="player-score-row">
+                        <div class="player-score-name" id="t1p3-name">Player 3</div>
+                        <div class="score-display" id="t1p3-r1">0</div>
+                        <div class="score-display" id="t1p3-r2">0</div>
+                        <div class="score-display" id="t1p3-r3">0</div>
+                        <div class="total-score" id="t1p3-total">0</div>
+                    </div>
+                    
+                    <div class="player-score-row">
+                        <div class="player-score-name" id="t1p4-name">Player 4</div>
+                        <div class="score-display" id="t1p4-r1">0</div>
+                        <div class="score-display" id="t1p4-r2">0</div>
+                        <div class="score-display" id="t1p4-r3">0</div>
+                        <div class="total-score" id="t1p4-total">0</div>
+                    </div>
+                    
+                    <div class="team-score-header" style="margin-top: 20px; border-top: 2px solid rgba(255,255,255,0.3); padding-top: 15px;">
+                        Round Headers: R1 | R2 | R3 | Total
+                    </div>
+                </div>
+                
+                <div class="team-score-section team-2-scoring">
+                    <div class="team-score-header" id="scoring-team-2-name">Team Blue</div>
+                    
+                    <div class="player-score-row">
+                        <div class="player-score-name" id="t2p1-name">Player 1</div>
+                        <div class="score-display" id="t2p1-r1">0</div>
+                        <div class="score-display" id="t2p1-r2">0</div>
+                        <div class="score-display" id="t2p1-r3">0</div>
+                        <div class="total-score" id="t2p1-total">0</div>
+                    </div>
+                    
+                    <div class="player-score-row">
+                        <div class="player-score-name" id="t2p2-name">Player 2</div>
+                        <div class="score-display" id="t2p2-r1">0</div>
+                        <div class="score-display" id="t2p2-r2">0</div>
+                        <div class="score-display" id="t2p2-r3">0</div>
+                        <div class="total-score" id="t2p2-total">0</div>
+                    </div>
+                    
+                    <div class="player-score-row">
+                        <div class="player-score-name" id="t2p3-name">Player 3</div>
+                        <div class="score-display" id="t2p3-r1">0</div>
+                        <div class="score-display" id="t2p3-r2">0</div>
+                        <div class="score-display" id="t2p3-r3">0</div>
+                        <div class="total-score" id="t2p3-total">0</div>
+                    </div>
+                    
+                    <div class="player-score-row">
+                        <div class="player-score-name" id="t2p4-name">Player 4</div>
+                        <div class="score-display" id="t2p4-r1">0</div>
+                        <div class="score-display" id="t2p4-r2">0</div>
+                        <div class="score-display" id="t2p4-r3">0</div>
+                        <div class="total-score" id="t2p4-total">0</div>
+                    </div>
+                    
+                    <div class="team-score-header" style="margin-top: 20px; border-top: 2px solid rgba(255,255,255,0.3); padding-top: 15px;">
+                        Round Headers: R1 | R2 | R3 | Total
+                    </div>
+                </div>
+            </div>
+            
+            <div class="winner-announcement" id="winner-announcement">
+                🏆 <span id="winning-team-name">Team Name</span> WINS! 🏆<br>
+                <div style="font-size: 18px; margin-top: 15px;">Each player wins $100!</div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn" onclick="updateScoring()">🔄 Refresh Leaderboard</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Data persistence functions
+        function saveData() {
+            const data = {};
+            
+            // Save all form inputs
+            const inputs = document.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                data[input.id] = input.value;
+            });
+            
+            try {
+                localStorage.setItem('golfTournamentData', JSON.stringify(data));
+            } catch (e) {
+                console.log('LocalStorage not available, data will not persist');
+            }
+        }
+        
+        function loadData() {
+            try {
+                const saved = localStorage.getItem('golfTournamentData');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    
+                    // Restore all form inputs
+                    Object.keys(data).forEach(id => {
+                        const element = document.getElementById(id);
+                        if (element) {
+                            element.value = data[id];
+                        }
+                    });
+                    
+                    // Update displays after loading
+                    updateTeamNames();
+                    updateMatchupDropdowns();
+                    updateMatchNames();
+                    calculateMatchResults();
+                }
+            } catch (e) {
+                console.log('Error loading data:', e);
+            }
+        }
+        
+        function exportData() {
+            const data = {};
+            const inputs = document.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                if (input.value) {
+                    data[input.id] = input.value;
+                }
+            });
+            
+            document.getElementById('export-data').value = JSON.stringify(data, null, 2);
+            document.getElementById('export-section').style.display = 'block';
+            document.getElementById('import-section').style.display = 'none';
+        }
+        
+        function importData() {
+            document.getElementById('import-section').style.display = 'block';
+            document.getElementById('export-section').style.display = 'none';
+        }
+        
+
+
+        
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
+                try {
+                    localStorage.removeItem('golfTournamentData');
+                } catch (e) {
+                    console.log('LocalStorage not available');
+                }
+                
+                // Clear all inputs
+                const inputs = document.querySelectorAll('input, select');
+                inputs.forEach(input => {
+                    input.value = '';
+                });
+                
+                // Reset team names to defaults
+                document.getElementById('team-1-name').value = 'Team Red';
+                document.getElementById('team-2-name').value = 'Team Blue';
+                
+                // Update displays
+                updateTeamNames();
+                updateMatchupDropdowns();
+                updateMatchNames();
+                calculateMatchResults();
+                
+                alert('All data cleared!');
+            }
+        }
+        
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content and mark tab as active
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+            
+            // Update scoring with latest player names
+            if (tabName === 'scoring') {
+                updateScoring();
+            }
+            
+            // Update match names when switching to matches tab
+            if (tabName === 'matches') {
+                updateMatchNames();
+            }
+        }
+        
+        function updateMatchNames() {
+            // Update Round 1 match names based on assignments
+            updateR1MatchNames();
+            
+            // Update Round 2 team names
+            const team1Name = document.getElementById('team-1-name').value || 'Team Red';
+            const team2Name = document.getElementById('team-2-name').value || 'Team Blue';
+            document.getElementById('r2-red-team').textContent = team1Name;
+            document.getElementById('r2-blue-team').textContent = team2Name;
+            
+            // Update Round 3 match names based on assignments
+            updateR3MatchNames();
+        }
+        // save to server (PUT)
+async function saveToNeon(key, payload) {
+  const res = await fetch("/.netlify/functions/data", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ key, payload })
+  });
+  if (!res.ok) throw new Error("Save failed");
+}
+
+// Replace the existing saveToNeon, loadFromNeon, and related functions with these:
+
+// Save to Neon database
+async function saveToNeon() {
+    try {
+        const data = collectFormData();
+        const response = await fetch("/.netlify/functions/data", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                key: "golf-tournament-2025", 
+                payload: data 
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Save failed: ${response.status}`);
+        }
+        
+        alert("Data saved to cloud successfully!");
+    } catch (error) {
+        console.error("Save error:", error);
+        alert(`Failed to save: ${error.message}`);
+    }
+}
+
+// Load from Neon database
+async function loadFromNeon() {
+    try {
+        const response = await fetch("/.netlify/functions/data?key=golf-tournament-2025");
+        
+        if (!response.ok) {
+            throw new Error(`Load failed: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // If no data exists, don't restore anything
+        if (Object.keys(data).length === 0) {
+            alert("No saved data found in cloud.");
+            return;
+        }
+        
+        restoreFormData(data);
+        alert("Data loaded from cloud successfully!");
+    } catch (error) {
+        console.error("Load error:", error);
+        alert(`Failed to load: ${error.message}`);
+    }
+}
+
+function collectFormData() {
+    const data = {};
+    document.querySelectorAll('input, select, textarea').forEach(el => {
+        if (!el.id) return; // Skip elements without IDs
+        
+        if (el.type === 'checkbox') {
+            data[el.id] = el.checked;
+        } else if (el.type === 'radio') {
+            if (el.checked) data[el.id] = el.value;
+        } else {
+            data[el.id] = el.value;
+        }
+    });
+    return data;
+}
+
+function restoreFormData(data) {
+    document.querySelectorAll('input, select, textarea').forEach(el => {
+        if (!el.id || !(el.id in data)) return;
+        
+        if (el.type === 'checkbox') {
+            el.checked = !!data[el.id];
+        } else if (el.type === 'radio') {
+            el.checked = (el.value === data[el.id]);
+        } else {
+            el.value = data[el.id];
+        }
+    });
+
+    // Update UI after restoring data
+    if (typeof updateTeamNames === 'function') updateTeamNames();
+    if (typeof updateMatchupDropdowns === 'function') updateMatchupDropdowns();
+    if (typeof updateMatchNames === 'function') updateMatchNames();
+    if (typeof calculateMatchResults === 'function') calculateMatchResults();
+}
+
+        
+        function updateR1MatchNames() {
+            // Match 1 - Red Pair 1 vs Blue Pair 1
+            const redP1 = document.getElementById('r1-red-p1').value;
+            const redP2 = document.getElementById('r1-red-p2').value;
+            const blueP1 = document.getElementById('r1-blue-p1').value;
+            const blueP2 = document.getElementById('r1-blue-p2').value;
+            
+            let redPair1Name = 'Red Pair 1';
+            let bluePair1Name = 'Blue Pair 1';
+            
+            if (redP1 && redP2) {
+                const red1Name = document.getElementById(`team1-player${redP1}-name`).value || `Red P${redP1}`;
+                const red2Name = document.getElementById(`team1-player${redP2}-name`).value || `Red P${redP2}`;
+                redPair1Name = `${red1Name} & ${red2Name}`;
+            }
+            
+            if (blueP1 && blueP2) {
+                const blue1Name = document.getElementById(`team2-player${blueP1}-name`).value || `Blue P${blueP1}`;
+                const blue2Name = document.getElementById(`team2-player${blueP2}-name`).value || `Blue P${blueP2}`;
+                bluePair1Name = `${blue1Name} & ${blue2Name}`;
+            }
+            
+            document.getElementById('r1m1-red-pair').textContent = redPair1Name;
+            document.getElementById('r1m1-blue-pair').textContent = bluePair1Name;
+            
+            // Match 2 - Red Pair 2 vs Blue Pair 2
+            const redP3 = document.getElementById('r1-red-p3').value;
+            const redP4 = document.getElementById('r1-red-p4').value;
+            const blueP3 = document.getElementById('r1-blue-p3').value;
+            const blueP4 = document.getElementById('r1-blue-p4').value;
+            
+            let redPair2Name = 'Red Pair 2';
+            let bluePair2Name = 'Blue Pair 2';
+            
+            if (redP3 && redP4) {
+                const red3Name = document.getElementById(`team1-player${redP3}-name`).value || `Red P${redP3}`;
+                const red4Name = document.getElementById(`team1-player${redP4}-name`).value || `Red P${redP4}`;
+                redPair2Name = `${red3Name} & ${red4Name}`;
+            }
+            
+            if (blueP3 && blueP4) {
+                const blue3Name = document.getElementById(`team2-player${blueP3}-name`).value || `Blue P${blueP3}`;
+                const blue4Name = document.getElementById(`team2-player${blueP4}-name`).value || `Blue P${blueP4}`;
+                bluePair2Name = `${blue3Name} & ${blue4Name}`;
+            }
+            
+            document.getElementById('r1m2-red-pair').textContent = redPair2Name;
+            document.getElementById('r1m2-blue-pair').textContent = bluePair2Name;
+        }
+        
+        function updateR3MatchNames() {
+            for (let i = 1; i <= 4; i++) {
+                const redPlayer = document.getElementById(`r3-match${i}-red`).value;
+                const bluePlayer = document.getElementById(`r3-match${i}-blue`).value;
+                
+                let redName = 'Red Player';
+                let blueName = 'Blue Player';
+                
+                if (redPlayer) {
+                    redName = document.getElementById(`team1-player${redPlayer}-name`).value || `Red P${redPlayer}`;
+                }
+                
+                if (bluePlayer) {
+                    blueName = document.getElementById(`team2-player${bluePlayer}-name`).value || `Blue P${bluePlayer}`;
+                }
+                
+                document.getElementById(`r3m${i}-red-player`).textContent = redName;
+                document.getElementById(`r3m${i}-blue-player`).textContent = blueName;
+            }
+        }
+        
+        function updateTeamNames() {
+            const team1Name = document.getElementById('team-1-name').value || 'Team Red';
+            const team2Name = document.getElementById('team-2-name').value || 'Team Blue';
+            
+            // Update header
+            document.getElementById('header-team-1').textContent = team1Name;
+            document.getElementById('header-team-2').textContent = team2Name;
+            
+            // Update scoring page
+            document.getElementById('scoring-team-1-name').textContent = team1Name;
+            document.getElementById('scoring-team-2-name').textContent = team2Name;
+            document.getElementById('team-1-final-name').textContent = team1Name;
+            document.getElementById('team-2-final-name').textContent = team2Name;
+        }
+        
+        function updateScoring() {
+            // Update team names
+            updateTeamNames();
+            
+            // Update player names in scoring
+            for (let i = 1; i <= 4; i++) {
+                const team1PlayerName = document.getElementById(`team1-player${i}-name`).value || `Player ${i}`;
+                const team2PlayerName = document.getElementById(`team2-player${i}-name`).value || `Player ${i}`;
+                
+                document.getElementById(`t1p${i}-name`).textContent = team1PlayerName;
+                document.getElementById(`t2p${i}-name`).textContent = team2PlayerName;
+            }
+            
+            // Update matchup dropdowns
+            updateMatchupDropdowns();
+            
+            // Update match names
+            updateMatchNames();
+            
+            // Recalculate results
+            calculateMatchResults();
+        }
+        
+        function updateMatchupDropdowns() {
+            // Get all player names
+            const redPlayers = [];
+            const bluePlayers = [];
+            
+            for (let i = 1; i <= 4; i++) {
+                const redName = document.getElementById(`team1-player${i}-name`).value || `Red Player ${i}`;
+                const blueName = document.getElementById(`team2-player${i}-name`).value || `Blue Player ${i}`;
+                redPlayers.push({id: i, name: redName});
+                bluePlayers.push({id: i, name: blueName});
+            }
+            
+            // Update Round 1 dropdowns (2v2)
+            const r1RedSelects = ['r1-red-p1', 'r1-red-p2', 'r1-red-p3', 'r1-red-p4'];
+            const r1BlueSelects = ['r1-blue-p1', 'r1-blue-p2', 'r1-blue-p3', 'r1-blue-p4'];
+            
+            r1RedSelects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                const currentValue = select.value;
+                select.innerHTML = '<option value="">Select Player</option>';
+                redPlayers.forEach(player => {
+                    const option = document.createElement('option');
+                    option.value = player.id;
+                    option.textContent = player.name;
+                    if (player.id == currentValue) option.selected = true;
+                    select.appendChild(option);
+                });
+            });
+            
+            r1BlueSelects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                const currentValue = select.value;
+                select.innerHTML = '<option value="">Select Player</option>';
+                bluePlayers.forEach(player => {
+                    const option = document.createElement('option');
+                    option.value = player.id;
+                    option.textContent = player.name;
+                    if (player.id == currentValue) option.selected = true;
+                    select.appendChild(option);
+                });
+            });
+            
+            // Update Round 3 dropdowns (1v1)
+            const r3RedSelects = ['r3-match1-red', 'r3-match2-red', 'r3-match3-red', 'r3-match4-red'];
+            const r3BlueSelects = ['r3-match1-blue', 'r3-match2-blue', 'r3-match3-blue', 'r3-match4-blue'];
+            
+            r3RedSelects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                const currentValue = select.value;
+                select.innerHTML = '<option value="">Red Player</option>';
+                redPlayers.forEach(player => {
+                    const option = document.createElement('option');
+                    option.value = player.id;
+                    option.textContent = player.name;
+                    if (player.id == currentValue) option.selected = true;
+                    select.appendChild(option);
+                });
+            });
+            
+            r3BlueSelects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                const currentValue = select.value;
+                select.innerHTML = '<option value="">Blue Player</option>';
+                bluePlayers.forEach(player => {
+                    const option = document.createElement('option');
+                    option.value = player.id;
+                    option.textContent = player.name;
+                    if (player.id == currentValue) option.selected = true;
+                    select.appendChild(option);
+                });
+            });
+        }
+        
+        function calculateMatchResults() {
+            let team1R1Points = 0;
+            let team1R2Points = 0;
+            let team1R3Points = 0;
+            let team2R1Points = 0;
+            let team2R2Points = 0;
+            let team2R3Points = 0;
+            
+            // Round 1 - 2v2 Matches
+            // Match 1
+            const r1m1RedScore = parseInt(document.getElementById('r1m1-red-score').value);
+            const r1m1BlueScore = parseInt(document.getElementById('r1m1-blue-score').value);
+            
+            if (!isNaN(r1m1RedScore) && !isNaN(r1m1BlueScore)) {
+                if (r1m1RedScore < r1m1BlueScore) {
+                    document.getElementById('r1m1-result').textContent = 'Red Team Wins! (+1 point)';
+                    document.getElementById('r1m1-result').className = 'match-result red-win';
+                    team1R1Points += 1;
+                } else {
+                    document.getElementById('r1m1-result').textContent = 'Blue Team Wins! (+1 point)';
+                    document.getElementById('r1m1-result').className = 'match-result blue-win';
+                    team2R1Points += 1;
+                }
+            }
+            
+            // Match 2
+            const r1m2RedScore = parseInt(document.getElementById('r1m2-red-score').value);
+            const r1m2BlueScore = parseInt(document.getElementById('r1m2-blue-score').value);
+            
+            if (!isNaN(r1m2RedScore) && !isNaN(r1m2BlueScore)) {
+                if (r1m2RedScore < r1m2BlueScore) {
+                    document.getElementById('r1m2-result').textContent = 'Red Team Wins! (+1 point)';
+                    document.getElementById('r1m2-result').className = 'match-result red-win';
+                    team1R1Points += 1;
+                } else {
+                    document.getElementById('r1m2-result').textContent = 'Blue Team Wins! (+1 point)';
+                    document.getElementById('r1m2-result').className = 'match-result blue-win';
+                    team2R1Points += 1;
+                }
+            }
+            
+            // Round 2 - Team Scramble
+            const r2RedScore = parseInt(document.getElementById('r2-red-score').value);
+            const r2BlueScore = parseInt(document.getElementById('r2-blue-score').value);
+            
+            if (!isNaN(r2RedScore) && !isNaN(r2BlueScore)) {
+                if (r2RedScore < r2BlueScore) {
+                    document.getElementById('r2-result').textContent = 'Red Team Wins! (+3 points)';
+                    document.getElementById('r2-result').className = 'match-result red-win';
+                    team1R2Points = 3;
+                } else {
+                    document.getElementById('r2-result').textContent = 'Blue Team Wins! (+3 points)';
+                    document.getElementById('r2-result').className = 'match-result blue-win';
+                    team2R2Points = 3;
+                }
+            }
+            
+            // Round 3 - Individual Matches
+            for (let i = 1; i <= 4; i++) {
+                const redScore = parseInt(document.getElementById(`r3m${i}-red-score`).value);
+                const blueScore = parseInt(document.getElementById(`r3m${i}-blue-score`).value);
+                
+                if (!isNaN(redScore) && !isNaN(blueScore)) {
+                    if (redScore < blueScore) {
+                        document.getElementById(`r3m${i}-result`).textContent = 'Red Player Wins! (+1 point to Red Team)';
+                        document.getElementById(`r3m${i}-result`).className = 'match-result red-win';
+                        team1R3Points += 1;
+                    } else {
+                        document.getElementById(`r3m${i}-result`).textContent = 'Blue Player Wins! (+1 point to Blue Team)';
+                        document.getElementById(`r3m${i}-result`).className = 'match-result blue-win';
+                        team2R3Points += 1;
+                    }
+                }
+            }
+            
+            // Update team points displays
+            document.getElementById('team-1-r1-points').textContent = team1R1Points;
+            document.getElementById('team-1-r2-points').textContent = team1R2Points;
+            document.getElementById('team-1-r3-points').textContent = team1R3Points;
+            document.getElementById('team-2-r1-points').textContent = team2R1Points;
+            document.getElementById('team-2-r2-points').textContent = team2R2Points;
+            document.getElementById('team-2-r3-points').textContent = team2R3Points;
+            
+            const team1Total = team1R1Points + team1R2Points + team1R3Points;
+            const team2Total = team2R1Points + team2R2Points + team2R3Points;
+            
+            document.getElementById('team-1-total-points').textContent = team1Total;
+            document.getElementById('team-2-total-points').textContent = team2Total;
+            
+            // Update individual player displays (distribute points evenly among team members)
+            updatePlayerPointsDisplay(team1R1Points, team1R2Points, team1R3Points, 1);
+            updatePlayerPointsDisplay(team2R1Points, team2R2Points, team2R3Points, 2);
+            
+            // Check for winner
+            const winnerAnnouncement = document.getElementById('winner-announcement');
+            if (team1Total > 0 || team2Total > 0) {
+                if (team1Total > team2Total) {
+                    const team1Name = document.getElementById('team-1-name').value || 'Team Red';
+                    document.getElementById('winning-team-name').textContent = team1Name;
+                    winnerAnnouncement.style.display = 'block';
+                } else if (team2Total > team1Total) {
+                    const team2Name = document.getElementById('team-2-name').value || 'Team Blue';
+                    document.getElementById('winning-team-name').textContent = team2Name;
+                    winnerAnnouncement.style.display = 'block';
+                } else {
+                    winnerAnnouncement.style.display = 'none';
+                }
+            } else {
+                winnerAnnouncement.style.display = 'none';
+            }
+        }
+        
+        function updatePlayerPointsDisplay(r1Points, r2Points, r3Points, teamNum) {
+            const r1PerPlayer = r1Points / 4;
+            const r2PerPlayer = r2Points / 4;
+            const r3PerPlayer = r3Points / 4;
+            
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`t${teamNum}p${i}-r1`).textContent = r1PerPlayer;
+                document.getElementById(`t${teamNum}p${i}-r2`).textContent = r2PerPlayer;
+                document.getElementById(`t${teamNum}p${i}-r3`).textContent = r3PerPlayer;
+                document.getElementById(`t${teamNum}p${i}-total`).textContent = r1PerPlayer + r2PerPlayer + r3PerPlayer;
+            }
+        }
+        
+        function calculateTeamTotals() {
+            // This function is now handled by calculateMatchResults()
+            calculateMatchResults();
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved data first
+            loadData();
+            
+            updateTeamNames();
+            updateMatchupDropdowns();
+            
+            // Add event listeners to team name inputs
+            document.getElementById('team-1-name').addEventListener('input', function() {
+                updateTeamNames();
+                saveData();
+            });
+            document.getElementById('team-2-name').addEventListener('input', function() {
+                updateTeamNames();
+                saveData();
+            });
+            
+            // Add event listeners to player name inputs
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`team1-player${i}-name`).addEventListener('input', function() {
+                    updateScoring();
+                    saveData();
+                });
+                document.getElementById(`team2-player${i}-name`).addEventListener('input', function() {
+                    updateScoring();
+                    saveData();
+                });
+            }
+            
+            // Add event listeners to matchup dropdowns
+            const matchupSelects = [
+                'r1-red-p1', 'r1-red-p2', 'r1-red-p3', 'r1-red-p4',
+                'r1-blue-p1', 'r1-blue-p2', 'r1-blue-p3', 'r1-blue-p4',
+                'r3-match1-red', 'r3-match1-blue', 'r3-match2-red', 'r3-match2-blue',
+                'r3-match3-red', 'r3-match3-blue', 'r3-match4-red', 'r3-match4-blue'
+            ];
+            
+            matchupSelects.forEach(selectId => {
+                const element = document.getElementById(selectId);
+                if (element) {
+                    element.addEventListener('change', function() {
+                        updateMatchNames();
+                        saveData();
+                    });
+                }
+            });
+        });
+    </script>
+<div class="data-controls">
+    <h4>Data Persistence</h4>
+    <p style="margin-bottom: 15px;">(For Scotty to use in case the scoring fucks up)</p>
+    <button class="btn" onclick="saveToNeon()">💾 Save to Cloud</button>
+    <button class="btn" onclick="loadFromNeon()">☁️ Load from Cloud</button>
+    <button class="btn" onclick="exportData()">📤 Backup Data</button>
+    <button class="btn" onclick="importData()">📥 Restore Data</button>
+    <button class="btn" onclick="clearAllData()" style="background: #dc3545;">🗑️ Clear All</button>
+    
+    <div class="export-import" id="export-section" style="display: none;">
+        <h5>Backup Data (copy this text):</h5>
+        <textarea id="export-data" readonly></textarea>
+    </div>
+    
+    <div class="export-import" id="import-section" style="display: none;">
+        <h5>Paste backup data here:</h5>
+        <textarea id="import-data" placeholder="Paste your backup data here..."></textarea>
+        <br>
+        <button class="btn" onclick="restoreFromText()">Restore from Text</button>
+    </div>
+</div>
+</body>
+</html>
