@@ -500,9 +500,13 @@
             background: #e3f2fd;
             border: 1px solid #90caf9;
             border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
+            padding: 0;
+            margin:  0;
             text-align: center;
+            position: fixed;
+            bottom: 0; /* Positions the element at the bottom edge of the viewport */
+             left: 0; /* Ensures it starts from the left edge (or adjust as needed) */
+            width: 100%;
         }
         
         .data-controls h4 {
@@ -698,8 +702,8 @@
     
     /* Data controls mobile */
     .data-controls {
-        padding: 15px;
-        margin: 15px 0;
+        padding: 0px;
+        margin: 0 0;
     }
     
     textarea {
@@ -795,6 +799,7 @@
             <button class="tab active" onclick="showTab('teams')">Team Setup</button>
             <button class="tab" onclick="showTab('matches')">Match Scoring</button>
             <button class="tab" onclick="showTab('scoring')">Team Leaderboard</button>
+            <button class="tab" onclick="showTab('admin')">Settings</button>
         </div>
         
         <div id="teams" class="tab-content active">
@@ -1343,8 +1348,26 @@
                 <button class="btn" onclick="updateScoring()">🔄 Refresh Leaderboard</button>
             </div>
         </div>
+    <div id="admin" class="tab-content">
+        <div class="rules-section" style="text-align: center; margin-bottom: 30px; margin-top: -10px">
+            <p>ignore these this is for me to use in case the scoring fucks up</p>
+            <button class="btn" onclick="exportData()">Backup Data</button>
+            <button class="btn" onclick="importData()">Restore Data</button>
+         
+ 
+            <div class="export-import" id="export-section" style="display: none;">
+                <h5>Backup Data (copy this text):</h5>
+                <textarea id="export-data" readonly></textarea>
+            </div>
+            <div class="export-import" id="import-section" style="display: none;">
+                <h5>Paste backup data here:</h5>
+                <textarea id="import-data" placeholder="Paste your backup data here..."></textarea>
+                <br>
+                <button class="btn" onclick="restoreFromText()">Restore from Text</button>
+            </div>
+        </div>
     </div>
-    
+    </div>
     <script>
         // Data persistence functions
         function saveData() {
@@ -1907,7 +1930,9 @@ function restoreFormData(data) {
         document.addEventListener('DOMContentLoaded', function() {
             // Load saved data first
             loadData();
-            
+            loadFromNeon().catch(() => {
+        console.log('No cloud data found or error loading, using localStorage instead');
+    });
             updateTeamNames();
             updateMatchupDropdowns();
             
@@ -1952,26 +1977,13 @@ function restoreFormData(data) {
             });
         });
     </script>
+
 <div class="data-controls">
-    <h4>Data Persistence</h4>
-    <p style="margin-bottom: 15px;">(For Scotty to use in case the scoring fucks up)</p>
-    <button class="btn" onclick="saveToNeon()">💾 Save to Cloud</button>
-    <button class="btn" onclick="loadFromNeon()">☁️ Load from Cloud</button>
-    <button class="btn" onclick="exportData()">📤 Backup Data</button>
-    <button class="btn" onclick="importData()">📥 Restore Data</button>
-    <button class="btn" onclick="clearAllData()" style="background: #dc3545;">🗑️ Clear All</button>
-    
-    <div class="export-import" id="export-section" style="display: none;">
-        <h5>Backup Data (copy this text):</h5>
-        <textarea id="export-data" readonly></textarea>
-    </div>
-    
-    <div class="export-import" id="import-section" style="display: none;">
-        <h5>Paste backup data here:</h5>
-        <textarea id="import-data" placeholder="Paste your backup data here..."></textarea>
-        <br>
-        <button class="btn" onclick="restoreFromText()">Restore from Text</button>
-    </div>
+    <button class="btn" onclick="saveToNeon()" style="background: #354edc; width: 75%;">Save</button>
+    <button class="btn" onclick="loadFromNeon()">Click this if no data is showing</button>
+    <button class="btn" onclick="clearAllData()" style="background: #dc3545;">Clear All</button>
 </div>
+
+
 </body>
 </html>
