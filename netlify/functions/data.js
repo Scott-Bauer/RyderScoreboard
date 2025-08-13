@@ -1,11 +1,11 @@
 // netlify/functions/data.js
-// Safe Netlify Function using @neondatabase/serverless
-// Make sure DATABASE_URL is set in Netlify Environment Variables
+// Uses pg (TCP) to connect to Neon in Netlify Functions
+// Make sure DATABASE_URL in Netlify points to the Direct TCP connection string
 
-const { Client } = require('@neondatabase/serverless');
+const { Client } = require('pg');
 
 exports.handler = async (event) => {
-  const connString = process.env.NETLIFY_DATABASE_URL;
+  const connString = process.env.DATABASE_URL;
 
   if (!connString) {
     return {
@@ -18,7 +18,7 @@ exports.handler = async (event) => {
   const client = new Client({ connectionString: connString });
 
   try {
-    // Connect to DB with safe try/catch
+    // Connect to the database
     try {
       await client.connect();
     } catch (err) {
@@ -32,7 +32,7 @@ exports.handler = async (event) => {
 
     const method = event.httpMethod;
 
-    // GET request: load data by key
+    // GET: fetch data by key
     if (method === 'GET') {
       const key = event.queryStringParameters?.key || 'default';
 
@@ -52,7 +52,7 @@ exports.handler = async (event) => {
       };
     }
 
-    // PUT request: save/update data
+    // PUT: save/update data
     if (method === 'PUT') {
       let body;
       try {
@@ -83,11 +83,9 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: 'Method not allowed' };
 
   } catch (err) {
-    // Catch any unexpected errors
     console.error('Unexpected function error:', err);
     return { statusCode: 500, body: JSON.stringify({ error: 'Unexpected server error' }) };
   } finally {
-    // Ensure client is closed
     try {
       await client.end();
     } catch (err) {
