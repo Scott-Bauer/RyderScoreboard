@@ -1,27 +1,46 @@
 // netlify/functions/data.js
-import { Client } from "@neondatabase/serverless"; // serverless Postgres driver
-// If you prefer using 'pg', follow Neon docs to override pg with @neondatabase/serverless
+import { Client } from "@neondatabase/serverless";
 
-const connString = process.env.DATABASE_URL;
-if (!connString) throw new Error("Missing DATABASE_URL env var");
+const connString = process.env.NETLIFY_DATABASE_URL;
 
 export async function handler(event) {
-  // Route: GET?key=xxx  OR  PUT with JSON body { key: "...", payload: {...} }
+  console.log("Function called with method:", event.httpMethod);
+  console.log("Environment check - NETLIFY_DATABASE_URL exists:", !!connString);
+  
+  if (!connString) {
+    console.error("Missing NETLIFY_DATABASE_URL environment variable");
+    return { 
+      statusCode: 500, 
+      body: JSON.stringify({ error: "Database configuration missing" }) 
+    };
+  }
+
   const method = event.httpMethod;
   const client = new Client({ connectionString: connString });
-
+  
   try {
     await client.connect();
+    console.log("Database connected successfully");
 
     if (method === "GET") {
       const key = (event.queryStringParameters && event.queryStringParameters.key) || "default";
+      console.log("GET request for key:", key);
+      
       const res = await client.query(
         "SELECT payload FROM app_data WHERE key = $1",
         [key]
       );
+      
       if (res.rowCount === 0) {
-        return { statusCode: 200, body: JSON.stringify({}) };
+        console.log("No data found for key:", key);
+        return { 
+          statusCode: 200, 
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({}) 
+        };
       }
+      
+      console.log("Data found for key:", key);
       return {
         statusCode: 200,
         headers: { "Content-Type": "application/json" },
@@ -30,28 +49,70 @@ export async function handler(event) {
     }
 
     if (method === "PUT") {
-      // expecting raw JSON body: { key: "golf-2025-08", payload: { ... } }
-      const body = JSON.parse(event.body || "{}");
+      console.log("PUT request received");
+      console.log("Raw body:", event.body);
+      
+      if (!event.body) {
+        return { 
+          statusCode: 400, 
+          body: JSON.stringify({ error: "No body provided" }) 
+        };
+      }
+
+      let body;
+      try {
+        body = JSON.parse(event.body);
+      } catch (parseError) {
+        console.error("JSON parse error:", parseError);
+        return { 
+          statusCode: 400, 
+          body: JSON.stringify({ error: "Invalid JSON in request body" }) 
+        };
+      }
+
       const key = body.key || "default";
       const payload = body.payload || {};
+      
+      console.log("Saving data for key:", key);
+      console.log("Payload size:", JSON.stringify(payload).length, "characters");
 
-      // upsert
       await client.query(
         `INSERT INTO app_data (key, payload, updated_at)
          VALUES ($1, $2::jsonb, now())
          ON CONFLICT (key) DO UPDATE SET payload = EXCLUDED.payload, updated_at = now()`,
-        [key, payload]
+        [key, JSON.stringify(payload)]
       );
-
-      return { statusCode: 204, body: "" };
+      
+      console.log("Data saved successfully");
+      return { 
+        statusCode: 200, 
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ success: true }) 
+      };
     }
 
-    return { statusCode: 405, body: "Method not allowed" };
+    console.log("Method not allowed:", method);
+    return { 
+      statusCode: 405, 
+      body: JSON.stringify({ error: "Method not allowed" }) 
+    };
+
   } catch (err) {
-    console.error(err);
-    return { statusCode: 500, body: JSON.stringify({ error: String(err) }) };
+    console.error("Function error:", err);
+    console.error("Error stack:", err.stack);
+    return { 
+      statusCode: 500, 
+      body: JSON.stringify({ 
+        error: "Internal server error", 
+        details: err.message 
+      }) 
+    };
   } finally {
-    // Important: close client each invocation (serverless-friendly)
-    try { await client.end(); } catch (e) {}
+    try { 
+      await client.end(); 
+      console.log("Database connection closed");
+    } catch (e) {
+      console.error("Error closing connection:", e);
+    }
   }
 }
