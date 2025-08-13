@@ -1407,16 +1407,8 @@
             document.getElementById('export-section').style.display = 'none';
         }
         
-// Wire up buttons
-document.getElementById('btn-save')?.addEventListener('click', () => {
-  saveToNeon().catch(e => alert(e.message));
-});
-document.getElementById('btn-load')?.addEventListener('click', () => {
-  loadFromNeon().catch(e => alert(e.message));
-});
 
-// Optional: auto-load on first visit
-loadFromServer().catch(() => {/* ignore if not yet saved */});
+
         
         function clearAllData() {
             if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
